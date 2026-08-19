@@ -4,10 +4,6 @@ from ui.ui_settings import Ui_Form
 
 
 class SettingWindow(QWidget):
-    saveButton: QPushButton
-    acceptButton: QPushButton
-    widthSpinBox: QSpinBox
-    heightSpinBox: QSpinBox
     resolutionChange = Signal(int,int)
 
     def __init__(self) -> None:

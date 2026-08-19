@@ -1,11 +1,8 @@
 from PySide6.QtWidgets import QMainWindow, QPushButton, QLabel, QStackedWidget, QWidget
 from ui.ui_shell import Ui_MainWindow
 from shell.views.settingsWindow import SettingWindow
+from shell.views.startPage import StartPage
 class ShellWindow(QMainWindow):
-    backButtton: QPushButton
-    screenTitle: QLabel
-    settingsButton: QPushButton
-    stackedWidget: QStackedWidget
 
     def __init__(self) -> None:
         super().__init__()
@@ -15,10 +12,11 @@ class ShellWindow(QMainWindow):
         self._pages: dict[str, QWidget] = {}
         self.settingPage = SettingWindow()   
         self.addPage("settings",self.settingPage)
-
+        self.addPage("main",StartPage())
+        self.openPage("main")
         self.settingPage.resolutionChange.connect(self.applyResolution)
         self.settingPage.setResolution(self.width(), self.height())
-
+        self.ui.backButton.clicked.connect(lambda: self.openPage("main"))
         self.ui.settingsButton.clicked.connect(lambda: self.openPage("settings"))
     def addPage(self, name: str, page: QWidget) -> None:
         self._pages[name] = page
