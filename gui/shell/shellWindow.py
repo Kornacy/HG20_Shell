@@ -13,8 +13,11 @@ class ShellWindow(QMainWindow):
         self.ui.setupUi(self)
 
         self._pages: dict[str, QWidget] = {}
+        self.settingPage = SettingWindow()   
+        self.addPage("settings",self.settingPage)
 
-        self.addPage("settings",SettingWindow())
+        self.settingPage.resolutionChange.connect(self.applyResolution)
+        self.settingPage.setResolution(self.width(), self.height())
 
         self.ui.settingsButton.clicked.connect(lambda: self.openPage("settings"))
     def addPage(self, name: str, page: QWidget) -> None:
@@ -23,3 +26,6 @@ class ShellWindow(QMainWindow):
     def openPage(self, name: str) -> None:
         page = self._pages[name]
         self.ui.stackedWidget.setCurrentWidget(page)
+
+    def applyResolution(self, width: int, height: int) -> None:
+        self.resize(width, height)
