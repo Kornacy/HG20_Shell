@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QMainWindow, QPushButton, QLabel, QStackedWidget, 
 from ui.ui_shell import Ui_MainWindow
 from shell.views.settingsWindow import SettingWindow
 from shell.views.startPage import StartPage
+from shell.views.resultsPage import ResultPage
 class ShellWindow(QMainWindow):
 
     def __init__(self) -> None:
@@ -10,13 +11,15 @@ class ShellWindow(QMainWindow):
         self.ui.setupUi(self)
 
         self._pages: dict[str, tuple[QWidget, str]] = {}
-        self.settingPage = SettingWindow()   
+        self.settingPage = SettingWindow()
+        self.startPage = StartPage()   
         self._history: list[str] = []
         self._currentPage: str | None = None
 
         #Dodawanie ekranów na shell
         self.addPage("settings",self.settingPage,"Ustawienia")
-        self.addPage("main",StartPage(),"HandGame 2.0")
+        self.addPage("main",self.startPage,"HandGame 2.0")
+        self.addPage("results",ResultPage(),"Wyniki")
 
         #Ekran startowy
         self.openPage("main")
@@ -24,6 +27,7 @@ class ShellWindow(QMainWindow):
         self.settingPage.resolutionChange.connect(self.applyResolution)
         self.settingPage.setResolution(self.width(), self.height())
 
+        self.startPage.requestPage.connect(self.openPage)
         #Przyciski
         self.ui.backButton.clicked.connect(lambda: self.goBack())
         self.ui.settingsButton.clicked.connect(lambda: self.openPage("settings"))

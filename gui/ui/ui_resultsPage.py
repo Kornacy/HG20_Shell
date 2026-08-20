@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'startPage.ui'
+## Form generated from reading UI file 'results.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.11.2
 ##
@@ -15,8 +15,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QLabel, QPushButton, QSizePolicy,
-    QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QLabel, QSizePolicy, QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -28,34 +27,9 @@ class Ui_Form(object):
         sizePolicy.setVerticalStretch(1)
         sizePolicy.setHeightForWidth(Form.sizePolicy().hasHeightForWidth())
         Form.setSizePolicy(sizePolicy)
-        self.verticalLayout_2 = QVBoxLayout(Form)
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.verticalLayout = QVBoxLayout()
-        self.verticalLayout.setObjectName(u"verticalLayout")
         self.label = QLabel(Form)
         self.label.setObjectName(u"label")
-        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        self.verticalLayout.addWidget(self.label)
-
-        self.gameButton1 = QPushButton(Form)
-        self.gameButton1.setObjectName(u"gameButton1")
-
-        self.verticalLayout.addWidget(self.gameButton1)
-
-        self.gameButton2 = QPushButton(Form)
-        self.gameButton2.setObjectName(u"gameButton2")
-
-        self.verticalLayout.addWidget(self.gameButton2)
-
-        self.resultsButton = QPushButton(Form)
-        self.resultsButton.setObjectName(u"resultsButton")
-
-        self.verticalLayout.addWidget(self.resultsButton)
-
-
-        self.verticalLayout_2.addLayout(self.verticalLayout)
-
+        self.label.setGeometry(QRect(150, 50, 101, 16))
 
         self.retranslateUi(Form)
 
@@ -64,9 +38,6 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
-        self.label.setText(QCoreApplication.translate("Form", u"Ekran startowy", None))
-        self.gameButton1.setText(QCoreApplication.translate("Form", u"Gra 1", None))
-        self.gameButton2.setText(QCoreApplication.translate("Form", u"Gra 2", None))
-        self.resultsButton.setText(QCoreApplication.translate("Form", u"Wyniki", None))
+        self.label.setText(QCoreApplication.translate("Form", u"Tu b\u0119d\u0105 wyniki", None))
     # retranslateUi
 
