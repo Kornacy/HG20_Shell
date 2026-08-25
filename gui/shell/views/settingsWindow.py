@@ -20,7 +20,7 @@ class SettingWindow(QWidget):
         for w, h in RESOLUTIONS:
             self.ui.resComboBox.addItem(f"{w} x {h}",(w,h))
         
-        self.ui.saveButton.clicked.connect(self.eimtResolution)
+        self.ui.saveButton.clicked.connect(self.emitResolution)
 
     def setResolution(self, width: int, height: int) -> None:
         target = (width, height)
@@ -29,6 +29,6 @@ class SettingWindow(QWidget):
                 self.ui.resComboBox.setCurrentIndex(i)
                 return
         self.ui.resComboBox.setCurrentIndex(0)
-    def eimtResolution(self) -> None:
+    def emitResolution(self) -> None:
         w, h = self.ui.resComboBox.currentData()
         self.resolutionChange.emit(w,h)
