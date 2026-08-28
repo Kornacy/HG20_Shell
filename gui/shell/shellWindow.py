@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QMainWindow, QPushButton, QLabel, QStackedWidget, QWidget
+from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QStackedWidget, QWidget
 from ui.ui_shell import Ui_MainWindow
 from shell.views.settingsWindow import SettingWindow
 from shell.views.startPage import StartPage
@@ -9,6 +9,17 @@ class ShellWindow(QMainWindow):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+
+        screen = self.screen()
+        available = screen.availableGeometry()
+
+
+        startWidth = min(1280, available.width())
+        startHeight = min(720, available.height())
+
+        self.resize(startWidth, startHeight)
+        self.move(available.center()-self.frameGeometry().center())
+        
 
         self._pages: dict[str, tuple[QWidget, str]] = {}
         self.settingPage = SettingWindow()
@@ -25,7 +36,7 @@ class ShellWindow(QMainWindow):
         self.openPage("main")
 
         self.settingPage.resolutionChange.connect(self.applyResolution)
-        self.settingPage.setResolution(self.width(), self.height())
+        self.settingPage.setResolution(startWidth, startHeight)
 
         self.startPage.requestPage.connect(self.openPage)
         #Przyciski
@@ -49,7 +60,31 @@ class ShellWindow(QMainWindow):
         self.ui.stackedWidget.setCurrentWidget(page)
 
     def applyResolution(self, width: int, height: int) -> None:
+        screen = self.screen()
+        available = screen.availableGeometry()
+        width = min(width, available.width())
+        height = min(height, available.height())
         self.resize(width, height)
+        self._keepOnScreen()
+
+    def _keepOnScreen(self) -> None:
+        screen = self.screen()
+        available = screen.availableGeometry()
+        frame = self.frameGeometry()
+
+        x=frame.x()
+        y=frame.y()
+
+        if frame.right()>available.right():
+            x=available.right() - frame.width() + 1
+        if frame.bottom() > available.bottom():
+            y = available.bottom() - frame.height() + 1
+        if x < available.left():
+            x = available.left()
+        if y < available.top():
+            y = available.top()
+        self.move(x,y)
+
 
     def goBack(self) -> None:
         if not self._history:
