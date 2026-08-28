@@ -11,6 +11,7 @@ RESOLUTIONS = [
 ]
 class SettingWindow(QWidget):
     resolutionChange = Signal(int,int)
+    fullScreenRequest = Signal()
 
     def __init__(self) -> None:
         super().__init__()
@@ -30,5 +31,8 @@ class SettingWindow(QWidget):
                 return
         self.ui.resComboBox.setCurrentIndex(0)
     def emitResolution(self) -> None:
+        if self.ui.fullScreenCheckBox.isChecked():
+            self.fullScreenRequest.emit()
+            return
         w, h = self.ui.resComboBox.currentData()
         self.resolutionChange.emit(w,h)

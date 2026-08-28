@@ -1,4 +1,5 @@
 from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QStackedWidget, QWidget
+from PySide6.QtCore import Qt
 from ui.ui_shell import Ui_MainWindow
 from shell.views.settingsWindow import SettingWindow
 from shell.views.startPage import StartPage
@@ -9,6 +10,7 @@ class ShellWindow(QMainWindow):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.windowGeometry = None
 
         screen = self.screen()
         available = screen.availableGeometry()
@@ -37,6 +39,7 @@ class ShellWindow(QMainWindow):
 
         self.settingPage.resolutionChange.connect(self.applyResolution)
         self.settingPage.setResolution(startWidth, startHeight)
+        self.settingPage.fullScreenRequest.connect(self.showFullScreen)
 
         self.startPage.requestPage.connect(self.openPage)
         #Przyciski
@@ -60,11 +63,18 @@ class ShellWindow(QMainWindow):
         self.ui.stackedWidget.setCurrentWidget(page)
 
     def applyResolution(self, width: int, height: int) -> None:
+        if self.isFullScreen():
+            self.showNormal()
         screen = self.screen()
         available = screen.availableGeometry()
-        width = min(width, available.width())
-        height = min(height, available.height())
+        frame = self.frameGeometry()
+        heightDiff = frame.height() - self.height()
+        widthDiff = frame.width() - self.width()
+        width = min(width, available.width()-widthDiff)
+        height = min(height, available.height()-heightDiff)
+        
         self.resize(width, height)
+        self.windowGeometry = self.geometry()
         self._keepOnScreen()
 
     def _keepOnScreen(self) -> None:
@@ -94,3 +104,16 @@ class ShellWindow(QMainWindow):
         page, title = self._pages[prevId]
         self.ui.screenTitle.setText(title)
         self.ui.stackedWidget.setCurrentWidget(page)
+
+
+    def keyPressEvent(self, event) -> None:
+        if event.key() == Qt.Key.Key_F11 and self.isFullScreen():
+            self.showNormal()
+            self.setGeometry(self.windowGeometry)
+            self.settingPage.ui.fullScreenCheckBox.setChecked(False) 
+        elif event.key() == Qt.Key.Key_F11 and not self.isFullScreen():
+            self.windowGeometry = self.geometry()
+            self.showFullScreen()
+            self.settingPage.ui.fullScreenCheckBox.setChecked(True) 
+        else:
+            super().keyPressEvent(event)
