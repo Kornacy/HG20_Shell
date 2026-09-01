@@ -11,3 +11,4 @@ class StartPage(QWidget):
         self.ui.setupUi(self)
 
         self.ui.resultsButton.clicked.connect(lambda: self.requestPage.emit("results"))
+        self.ui.playButton.clicked.connect(lambda: self.requestPage.emit("gameSelect"))

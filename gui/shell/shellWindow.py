@@ -4,6 +4,7 @@ from ui.ui_shell import Ui_MainWindow
 from shell.views.settingsWindow import SettingWindow
 from shell.views.startPage import StartPage
 from shell.views.resultsPage import ResultPage
+from shell.views.selectGamePage import SelectGamePage
 class ShellWindow(QMainWindow):
 
     def __init__(self) -> None:
@@ -33,6 +34,7 @@ class ShellWindow(QMainWindow):
         self.addPage("settings",self.settingPage,"Ustawienia")
         self.addPage("main",self.startPage,"HandGame 2.0")
         self.addPage("results",ResultPage(),"Wyniki")
+        self.addPage("gameSelect", SelectGamePage(),"Wybierz grę")
 
         #Ekran startowy
         self.openPage("main")
